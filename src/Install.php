@@ -16,26 +16,31 @@ class Install
             'source' => '/app/common/logic', // 源目录
             'dest'   => '/app/common/logic', // 拷贝目标目录
             'type'   => 'file', // 类型，是拷贝源目录下的文件夹还是文件， folder 》文件夹， file 》文件
+            'mkdir'  => false, //目标目录是否需要新建目录
         ],
         [
             'source' => '/app/common/model',
             'dest'   => '/app/common/model',
             'type'   => 'file',
+            'mkdir'  => false,
         ],
         [
             'source' => '/app/common/validate',
             'dest'   => '/app/common/validate',
             'type'   => 'file',
+            'mkdir'  => false,
         ],
         [
             'source' => '/app/middleware',
             'dest'   => '/app/middleware',
             'type'   => 'file',
+            'mkdir'  => false,
         ],
         [
             'source' => '/app/user',
             'dest'   => '/app/user',
             'type'   => 'folder',
+            'mkdir'  => true,
         ],
         [
             'source' => '/public/admin_react/src/api',
@@ -46,11 +51,13 @@ class Install
             'source' => '/public/admin_react/src/pages',
             'dest'   => '/public/admin_react/src/pages',
             'type'   => 'folder',
+            'mkdir'  => false,
         ],
         [
             'source' => '/public/user_react',
             'dest'   => '/public/user_react',
             'type'   => 'folder',
+            'mkdir'  => true,
         ],
     ];
 
@@ -72,7 +79,7 @@ class Install
             if (self::installDetection()) {
 
                 foreach (self::$pathRelation as $item) {
-                    if (!is_dir(__DIR__ . $item['source'])) {
+                    if (! is_dir(__DIR__ . $item['source'])) {
                         continue;
                     }
 
@@ -124,7 +131,7 @@ class Install
         self::dbInit();
 
         foreach (self::$pathRelation as $item) {
-            if (!is_dir(__DIR__ . $item['source'])) {
+            if (! is_dir(__DIR__ . $item['source'])) {
                 continue;
             }
 
@@ -177,10 +184,10 @@ class Install
         $result = true;
 
         foreach (self::$pathRelation as $item) {
-            if (!is_dir(__DIR__ . $item['source'])) {
+            if (! is_dir(__DIR__ . $item['source'])) {
                 continue;
             }
-            
+
             // 检测拷贝文件夹
             if ($item['type'] == 'folder') {
                 // 获取源文件夹下所有的文件夹名
@@ -345,9 +352,9 @@ class Install
             }
 
             // 表前缀替换为用户自己的
-            $sql = str_replace("INSERT INTO `sa_", "INSERT INTO `" . self::$dbConfig['DB_PREFIX'] , $sql); // 插入语句
-            $sql = str_replace("UPDATE `sa_", "UPDATE `" . self::$dbConfig['DB_PREFIX'] , $sql); // 更新语句
-            $sql = str_replace("CREATE TABLE `sa_", "CREATE TABLE `" . self::$dbConfig['DB_PREFIX'] , $sql); // 新建表语句
+            $sql = str_replace("INSERT INTO `sa_", "INSERT INTO `" . self::$dbConfig['DB_PREFIX'], $sql); // 插入语句
+            $sql = str_replace("UPDATE `sa_", "UPDATE `" . self::$dbConfig['DB_PREFIX'], $sql); // 更新语句
+            $sql = str_replace("CREATE TABLE `sa_", "CREATE TABLE `" . self::$dbConfig['DB_PREFIX'], $sql); // 新建表语句
 
             Db::query($sql);
         }
