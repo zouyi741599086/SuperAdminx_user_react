@@ -9,6 +9,7 @@ class Install
 
     /**
      * 要拷贝的数据
+     * 如果要拷贝的目录下同时有文件夹跟文件，则要拷贝两次，一次拷贝下面的目录，一次拷贝下面的文件
      * @var array
      */
     protected static $pathRelation = [
@@ -16,7 +17,7 @@ class Install
             'source' => '/app/common/logic', // 源目录
             'dest'   => '/app/common/logic', // 拷贝目标目录
             'type'   => 'file', // 类型，是拷贝源目录下的文件夹还是文件， folder 》文件夹， file 》文件
-            'mkdir'  => false, //目标目录是否需要新建目录
+            'mkdir'  => false, //目标目录是否需要新建目录，则卸载的同时要删除 目标目录
         ],
         [
             'source' => '/app/common/model',
@@ -46,6 +47,7 @@ class Install
             'source' => '/public/admin_react/src/api',
             'dest'   => '/public/admin_react/src/api',
             'type'   => 'file',
+            'mkdir'  => false,
         ],
         [
             'source' => '/public/admin_react/src/pages',
@@ -58,6 +60,12 @@ class Install
             'dest'   => '/public/user_react',
             'type'   => 'folder',
             'mkdir'  => true,
+        ],
+        [
+            'source' => '/public/user_react',
+            'dest'   => '/public/user_react',
+            'type'   => 'file',
+            'mkdir'  => false,
         ],
     ];
 
@@ -92,7 +100,7 @@ class Install
 
                         $folderNames = self::getFolderNames(__DIR__ . $item['source']);
                         foreach ($folderNames as $v) {
-                            copy_dir(__DIR__ . "{$item['source']}/{$v}", base_path() . "{$item['dest']}/{$v}");
+                            self::copy_dir(__DIR__ . "{$item['source']}/{$v}", base_path() . "{$item['dest']}/{$v}");
                         }
                     }
 
@@ -144,7 +152,11 @@ class Install
             if ($item['type'] == 'folder') {
                 $folderNames = self::getFolderNames(__DIR__ . $item['source']);
                 foreach ($folderNames as $v) {
-                    remove_dir(base_path() . "{$item['dest']}/{$v}");
+                    @remove_dir(base_path() . "{$item['dest']}/{$v}");
+                }
+
+                if ($item['mkdir'] == true) {
+                    rmdir(base_path() . $item['dest']);
                 }
             }
 
@@ -152,7 +164,7 @@ class Install
             if ($item['type'] == 'file') {
                 $fileNames = self::getAllFiles(__DIR__ . $item['source']);
                 foreach ($fileNames as $v) {
-                    unlink(base_path() . "{$item['dest']}/{$v}");
+                    @unlink(base_path() . "{$item['dest']}/{$v}");
                 }
             }
         }
@@ -480,5 +492,29 @@ class Install
             }
         }
         return $config;
+    }
+
+    /**
+     * Copy dir
+     * @param string $source
+     * @param string $dest
+     * @param bool $overwrite
+     * @return void
+     */
+    private static function copy_dir(string $source, string $dest, bool $overwrite = false)
+    {
+        if (is_dir($source)) {
+            if (! is_dir($dest)) {
+                mkdir($dest, 755, true);
+            }
+            $files = scandir($source);
+            foreach ($files as $file) {
+                if ($file !== "." && $file !== "..") {
+                    self::copy_dir("$source/$file", "$dest/$file", $overwrite);
+                }
+            }
+        } else if (file_exists($source) && ($overwrite || ! file_exists($dest))) {
+            copy($source, $dest);
+        }
     }
 }
