@@ -35,22 +35,22 @@ class Install
         [
             'source' => '/app/user',
             'dest'   => '/app/user',
-            'type'   => 'file',
+            'type'   => 'folder',
         ],
         [
             'source' => '/public/admin_react/src/api',
             'dest'   => '/public/admin_react/src/api',
-            'type'   => 'folder',
+            'type'   => 'file',
         ],
         [
             'source' => '/public/admin_react/src/pages',
             'dest'   => '/public/admin_react/src/pages',
-            'type'   => 'file',
+            'type'   => 'folder',
         ],
         [
             'source' => '/public/user_react',
             'dest'   => '/public/user_react',
-            'type'   => 'file',
+            'type'   => 'folder',
         ],
     ];
 
