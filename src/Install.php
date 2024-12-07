@@ -1,5 +1,5 @@
 <?php
-namespace Superadminx\News;
+namespace superadminx\user_react;
 
 use think\facade\Db;
 
