@@ -9,15 +9,25 @@ class Install
 
     /**
      * 要拷贝的数据
-     * 如果要拷贝的目录下同时有文件夹跟文件，则要拷贝两次，一次拷贝下面的目录，一次拷贝下面的文件
+     * 如果要拷贝的目录下同时有文件夹跟文件，则要拷贝两次，一次拷贝下面的目录，一次拷贝下面的文件，一定要先拷贝文件
+     * source 源目录
+     * dest 拷贝目标目录
+     * type 类型，是拷贝源目录下的文件夹还是文件， folder 》文件夹， file 》文件
+     * mkdir 目标目录是否需要新建目录，则卸载的同时要删除 目标目录
      * @var array
      */
     protected static $pathRelation = [
         [
-            'source' => '/app/common/logic', // 源目录
-            'dest'   => '/app/common/logic', // 拷贝目标目录
-            'type'   => 'file', // 类型，是拷贝源目录下的文件夹还是文件， folder 》文件夹， file 》文件
-            'mkdir'  => false, //目标目录是否需要新建目录，则卸载的同时要删除 目标目录
+            'source' => '/app/admin/controller',
+            'dest'   => '/app/admin/controller',
+            'type'   => 'file',
+            'mkdir'  => false,
+        ],
+        [
+            'source' => '/app/common/logic',
+            'dest'   => '/app/common/logic',
+            'type'   => 'file',
+            'mkdir'  => false,
         ],
         [
             'source' => '/app/common/model',
@@ -58,14 +68,14 @@ class Install
         [
             'source' => '/public/user_react',
             'dest'   => '/public/user_react',
-            'type'   => 'folder',
-            'mkdir'  => true,
+            'type'   => 'file',
+            'mkdir'  => false,
         ],
         [
             'source' => '/public/user_react',
             'dest'   => '/public/user_react',
-            'type'   => 'file',
-            'mkdir'  => false,
+            'type'   => 'folder',
+            'mkdir'  => true,
         ],
     ];
 
