@@ -87,7 +87,7 @@ class Install
                     if ($item['type'] == 'folder') {
                         // 如果要新建目录
                         if ($item['mkdir']) {
-                            mkdir( base_path() . $item['dest'] , 0755, true)
+                            mkdir( base_path() . $item['dest'] , 0755, true);
                         }
 
                         $folderNames = self::getFolderNames(__DIR__ . $item['source']);
