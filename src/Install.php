@@ -86,9 +86,9 @@ class Install
                     // 拷贝文件夹
                     if ($item['type'] == 'folder') {
                         // 如果要新建目录
-                        if ($item['mkdir']) {
-                            mkdir( base_path() . $item['dest'] , 0755, true);
-                        }
+                        // if ($item['mkdir']) {
+                        //     mkdir( base_path() . $item['dest'] , 0755, true);
+                        // }
 
                         $folderNames = self::getFolderNames(__DIR__ . $item['source']);
                         foreach ($folderNames as $v) {
