@@ -7,7 +7,6 @@ use Webman\Http\Response;
 use Webman\Http\Request;
 use app\utils\Jwt;
 use app\common\model\UserModel;
-use app\common\model\AdminMenuModel;
 
 /**
  * user模块权限验证
