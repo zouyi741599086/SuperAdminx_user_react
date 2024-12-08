@@ -2,7 +2,7 @@ import { useState } from 'react'
 import loginLogin from '@/static/login-logo.png'
 import loginMain from '@/static/login-main.png'
 import { App, Card, Typography, Button, Form, Input, Checkbox, Flex } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, MobileOutlined } from '@ant-design/icons';
 import { storage } from '@/common/function'
 import { loginApi } from '@/api/login'
 import { useNavigate } from "react-router-dom";
@@ -92,7 +92,7 @@ export default () => {
                             ]}
                         >
                             <Input
-                                prefix={<UserOutlined />}
+                                prefix={<MobileOutlined />}
                                 placeholder="请输入手机号"
                                 size="large"
                             />
