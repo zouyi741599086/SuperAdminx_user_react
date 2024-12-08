@@ -1,5 +1,5 @@
 <?php
-namespace superadminx\user_react;
+namespace SuperAdminx\user_react;
 
 use think\facade\Db;
 
