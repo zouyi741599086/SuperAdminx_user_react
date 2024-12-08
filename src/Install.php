@@ -9,74 +9,18 @@ class Install
 
     /**
      * 要拷贝的数据
-     * 如果要拷贝的目录下同时有文件夹跟文件，则要拷贝两次，一次拷贝下面的目录，一次拷贝下面的文件，一定要先拷贝文件
-     * source 源目录
-     * dest 拷贝目标目录
-     * type 类型，是拷贝源目录下的文件夹还是文件， folder 》文件夹， file 》文件
-     * mkdir 目标目录是否需要新建目录，则卸载的同时要删除 目标目录
      * @var array
      */
     protected static $pathRelation = [
-        [
-            'source' => '/app/admin/controller',
-            'dest'   => '/app/admin/controller',
-            'type'   => 'file',
-            'mkdir'  => false,
-        ],
-        [
-            'source' => '/app/common/logic',
-            'dest'   => '/app/common/logic',
-            'type'   => 'file',
-            'mkdir'  => false,
-        ],
-        [
-            'source' => '/app/common/model',
-            'dest'   => '/app/common/model',
-            'type'   => 'file',
-            'mkdir'  => false,
-        ],
-        [
-            'source' => '/app/common/validate',
-            'dest'   => '/app/common/validate',
-            'type'   => 'file',
-            'mkdir'  => false,
-        ],
-        [
-            'source' => '/app/middleware',
-            'dest'   => '/app/middleware',
-            'type'   => 'file',
-            'mkdir'  => false,
-        ],
-        [
-            'source' => '/app/user',
-            'dest'   => '/app/user',
-            'type'   => 'folder',
-            'mkdir'  => true,
-        ],
-        [
-            'source' => '/public/admin_react/src/api',
-            'dest'   => '/public/admin_react/src/api',
-            'type'   => 'file',
-            'mkdir'  => false,
-        ],
-        [
-            'source' => '/public/admin_react/src/pages',
-            'dest'   => '/public/admin_react/src/pages',
-            'type'   => 'folder',
-            'mkdir'  => false,
-        ],
-        [
-            'source' => '/public/user_react',
-            'dest'   => '/public/user_react',
-            'type'   => 'file',
-            'mkdir'  => false,
-        ],
-        [
-            'source' => '/public/user_react',
-            'dest'   => '/public/user_react',
-            'type'   => 'folder',
-            'mkdir'  => true,
-        ],
+        '/app/admin/controller/UserMenu.php'        => '/app/admin/controller/UserMenu.php',
+        '/app/common/logic/UserMenuLogic.php'       => '/app/common/logic/UserMenuLogic.php',
+        '/app/common/model/UserMenuModel.php'       => '/app/common/model/UserMenuModel.php',
+        '/app/common/validate/UserMenuValidate.php' => '/app/common/validate/UserMenuValidate.php',
+        '/app/middleware/JwtUser.php'               => '/app/middleware/JwtUser.php',
+        '/app/user'                                 => '/app/user',
+        '/public/admin_react/src/api/userMenu.js'   => '/public/admin_react/src/api/userMenu.js',
+        '/public/admin_react/src/pages/userMenu'    => '/public/admin_react/src/pages/userMenu',
+        '/public/user_react'                        => '/public/user_react',
     ];
 
     // db的配置，用来标识是否已配置
@@ -96,30 +40,17 @@ class Install
             // 开始检测安装条件
             if (self::installDetection()) {
 
-                foreach (self::$pathRelation as $item) {
-                    if (! is_dir(__DIR__ . $item['source'])) {
-                        continue;
-                    }
+                foreach (self::$pathRelation as $source => $dest) {
+                    $type = self::checkPathOrFile($source);
 
                     // 拷贝文件夹
-                    if ($item['type'] == 'folder') {
-                        // 如果要新建目录
-                        // if ($item['mkdir']) {
-                        //     mkdir( base_path() . $item['dest'] , 0755, true);
-                        // }
-
-                        $folderNames = self::getFolderNames(__DIR__ . $item['source']);
-                        foreach ($folderNames as $v) {
-                            self::copy_dir(__DIR__ . "{$item['source']}/{$v}", base_path() . "{$item['dest']}/{$v}");
-                        }
+                    if ($type == 'folder') {
+                        self::copy_dir(__DIR__ . $source, base_path() . $dest);
                     }
 
                     // 拷贝文件
-                    if ($item['type'] == 'file') {
-                        $fileNames = self::getAllFiles(__DIR__ . $item['source']);
-                        foreach ($fileNames as $v) {
-                            copy(__DIR__ . "{$item['source']}/{$v}", base_path() . "{$item['dest']}/{$v}");
-                        }
+                    if ($type == 'file') {
+                        copy(__DIR__ . $source, base_path() . $dest);
                     }
                 }
 
@@ -136,6 +67,8 @@ class Install
                 }
 
                 echo "安装成功\n";
+            } else {
+                echo "安装失败：请删除依赖》解决问题》重新安装\n";
             }
         } catch (\Exception $e) {
             echo "{$e->getMessage()}\n";
@@ -153,30 +86,23 @@ class Install
         // 初始化db
         self::dbInit();
 
-        foreach (self::$pathRelation as $item) {
-            if (! is_dir(__DIR__ . $item['source'])) {
-                continue;
-            }
+        foreach (self::$pathRelation as $source => $dest) {
+            try {
+                $type = self::checkPathOrFile($source);
 
-            // 删除文件夹
-            if ($item['type'] == 'folder') {
-                $folderNames = self::getFolderNames(__DIR__ . $item['source']);
-                foreach ($folderNames as $v) {
-                    @remove_dir(base_path() . "{$item['dest']}/{$v}");
+                // 删除文件夹
+                if ($type == 'folder') {
+                    remove_dir(base_path() . $dest);
                 }
 
-                if ($item['mkdir'] == true) {
-                    rmdir(base_path() . $item['dest']);
+                // 删除文件
+                if ($type == 'file') {
+                    unlink(base_path() . $dest);
                 }
+            } catch (\Exception $e) {
+                echo "{$e->getMessage()}\n";
             }
 
-            // 删除文件
-            if ($item['type'] == 'file') {
-                $fileNames = self::getAllFiles(__DIR__ . $item['source']);
-                foreach ($fileNames as $v) {
-                    @unlink(base_path() . "{$item['dest']}/{$v}");
-                }
-            }
         }
 
         // 检测是否有adminMenu.sql，需要删除表中的权限节点
@@ -200,45 +126,33 @@ class Install
         }
     }
 
-
     /**
      * 安装前检测是否能安装
-     * @return void
+     * @return bool
      */
-    private static function installDetection()
+    private static function installDetection() : bool
     {
         // 是否能成功安装
         $result = true;
 
-        foreach (self::$pathRelation as $item) {
-            if (! is_dir(__DIR__ . $item['source'])) {
-                continue;
-            }
+        foreach (self::$pathRelation as $source => $dest) {
+            $type = self::checkPathOrFile($source);
 
             // 检测拷贝文件夹
-            if ($item['type'] == 'folder') {
-                // 获取源文件夹下所有的文件夹名
-                $folderNames = self::getFolderNames(__DIR__ . $item['source']);
-                foreach ($folderNames as $v) {
-                    // 检测目标文件夹是否已存在
-                    $tmp = base_path() . "{$item['dest']}/{$v}";
-                    if (is_dir($tmp)) {
-                        echo "安装失败：目录已存在{$tmp}，请删除\n";
-                        $result = false;
-                    }
+            if ($type == 'folder') {
+                $tmp = base_path() . $dest;
+                if (is_dir($tmp)) {
+                    echo "安装失败：目录已存在{$tmp}，请删除\n";
+                    $result = false;
                 }
             }
 
-            //检测拷贝文件
-            if ($item['type'] == 'file') {
-                // 获取源文件夹下所有的文件
-                $fileNames = self::getAllFiles(__DIR__ . $item['source']);
-                foreach ($fileNames as $v) {
-                    $tmp = base_path() . "{$item['dest']}/{$v}";
-                    if (file_exists($tmp) && is_file($tmp)) {
-                        echo "安装失败：文件已存在{$tmp}，请删除\n";
-                        $result = false;
-                    }
+            // 检测拷贝文件
+            if ($type == 'file') {
+                $tmp = base_path() . $dest;
+                if (file_exists($tmp) && is_file($tmp)) {
+                    echo "安装失败：文件已存在{$tmp}，请删除\n";
+                    $result = false;
                 }
             }
         }
@@ -255,53 +169,18 @@ class Install
                 }
             }
         }
-
         return $result;
     }
 
     /**
-     * 获取目录下的所有文件夹名
-     * @param string $dir 目录路劲
-     * @return string[]
+     * 判断拷贝的源 是目录 还是文件
+     * @param string $path
+     * @return string
      */
-    private static function getFolderNames($dir) : array
+    private static function checkPathOrFile(string $path)
     {
-        $folderNames = [];
-        if ($handle = opendir($dir)) {
-            while (false !== ($entry = readdir($handle))) {
-                if ($entry != "." && $entry != ".." && is_dir($dir . DIRECTORY_SEPARATOR . $entry)) {
-                    $folderNames[] = $entry;
-                }
-            }
-            closedir($handle);
-        }
-        return $folderNames;
-    }
-
-    /**
-     * 获取文件夹下所有文件名
-     * @param string $dir
-     * @return string[]
-     */
-    private static function getAllFiles(string $dir) : array
-    {
-        $files = [];
-        // 获取目录中的所有项（文件和文件夹）
-        $items = scandir($dir);
-        foreach ($items as $item) {
-            // 忽略 "." 和 ".." 这两个特殊目录
-            if ($item != "." && $item != "..") {
-                // 构建完整的路径
-                $fullPath = $dir . DIRECTORY_SEPARATOR . $item;
-
-                // 检查是否是一个文件
-                if (is_file($fullPath)) {
-                    $files[] = $item;
-                }
-            }
-        }
-
-        return $files;
+        $path = __DIR__ . $path;
+        return is_dir($path) ? 'folder' : 'file';
     }
 
     /**
