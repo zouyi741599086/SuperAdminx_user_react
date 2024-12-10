@@ -1,6 +1,6 @@
 {
     "name": "superadminx/user_react",
-    "description": "文章管理系统",
+    "description": "用户react端",
     "type": "library",
     "license": "MIT",
     "authors": [
