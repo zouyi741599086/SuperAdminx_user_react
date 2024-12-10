@@ -2,6 +2,4 @@
 
 先安装SuperAdminx在安装本插件
 
-``` bash
-composer require superadminx/news
-```
+[参考安装文档](https://www.superadminx.com/plugin/user_react.html)
