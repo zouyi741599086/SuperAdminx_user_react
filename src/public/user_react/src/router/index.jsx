@@ -13,10 +13,9 @@ const Refresh = lazy(() => import('@/pages/refresh/index'));
 const RequireAuth = (props) => {
     const [user] = useRecoilState(userStore);
     let userToken = storage.get(`userToken`) || sessionStorage.getItem(`userToken`) || null;
-    if (!user?.id || !userToken) {
-        return <Navigate to="/login" />
-    }
-    return <Layout />;
+	return <>
+        {!user?.id || !userToken ? <Navigate to="/login" replace={true} /> : <Layout /> }
+    </>
 }
 
 /**
