@@ -21,4 +21,8 @@ export const fileApi = {
     getSignature: (params = {}) => {
         return http.get('/user/File/getSignature', params);
     },
+    // 获取腾讯云cos 前端直传的签名
+    getQcloudSignature: (params = {}) => {
+        return http.get('/user/File/getQcloudSignature', params);
+    },
 }
