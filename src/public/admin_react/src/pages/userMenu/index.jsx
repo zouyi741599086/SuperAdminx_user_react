@@ -148,7 +148,7 @@ export default () => {
                 <Row>
                     <Col xs={24} md={12} lg={8} xl={8} xxl={8} style={{ marginBottom: '12px', paddingRight: layoutSetting.isMobile === false ? '12px' : '0px' }}>
                         <Card
-                            bordered={false}
+                            variant="borderless"
                             title={`权限节点`}
                             extra={<>
                                 <Space>
@@ -204,7 +204,7 @@ export default () => {
                         </Card>
                     </Col>
                     <Col xs={24} md={12} lg={16} xl={16} xxl={16}>
-                        <Card bordered={false} title={<><EditOutlined /> <span>编辑节点</span></>}>
+                        <Card variant="borderless" title={<><EditOutlined /> <span>编辑节点</span></>}>
                             {updateId.length > 0 ? <>
                                 <Lazyload>
                                     <Update
