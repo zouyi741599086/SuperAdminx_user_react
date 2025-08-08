@@ -26,7 +26,7 @@ class JwtUser implements MiddlewareInterface
             $request->user = Jwt::getUser('user_pc');
 
             // 高并发需要关掉此处控制一下验证时机
-            $request->user = UserModel::find($request->user['id']);
+            $request->user = UserModel::find($request->user->id);
             if (! $request->user || $request->user['status'] == 2) {
                 abort('非法请求', -2);
             }

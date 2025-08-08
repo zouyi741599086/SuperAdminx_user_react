@@ -28,7 +28,7 @@ class User
      */
     public function getUser(Request $request) : Response
     {
-        $data             = UserLogic::findData($request->user['id']);
+        $data             = UserLogic::findData($request->user->id);
         $user['UserMenu'] = UserMenuLogic::getList();
         return success($data);
     }
@@ -49,11 +49,11 @@ class User
             ])->check($params);
 
             // 手机号是否重复
-            if (UserModel::where('id', '<>', $request->user['id'])->where('tel', $params['tel'])->value('id')) {
+            if (UserModel::where('id', '<>', $request->user->id)->where('tel', $params['tel'])->value('id')) {
                 throw new \Exception("此手机号已存在~");
             }
 
-            UserModel::update($params, ['id' => $request->user['id']], ['img', 'name', 'tel']);
+            UserModel::update($params, ['id' => $request->user->id], ['img', 'name', 'tel']);
         } catch (\Exception $e) {
             return error($e->getMessage());
         }
@@ -69,7 +69,7 @@ class User
     public function updatePassword(Request $request) : Response
     {
         $params = $request->post();
-        $userId = $request->user['id'];
+        $userId = $request->user->id;
         try {
             validate([
                 'password|原密码'            => 'require',
