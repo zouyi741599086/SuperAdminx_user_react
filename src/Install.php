@@ -18,7 +18,7 @@ class Install
         '/plugin/user/app/admin/controller/UserMenu.php'        => '/plugin/user/app/admin/controller/UserMenu.php',
         '/plugin/user/app/user'                                 => '/plugin/user/app/user',
         '/plugin/user/app/common/logic/UserMenuLogic.php'       => '/plugin/user/app/common/logic/UserMenuLogic.php',
-        '/plugin/user/app/common/model/UserMenuModel.php'       => '/plugin/user/app/common/logic/UserMenuModel.php',
+        '/plugin/user/app/common/model/UserMenuModel.php'       => '/plugin/user/app/common/model/UserMenuModel.php',
         '/plugin/user/app/common/validate/UserMenuValidate.php' => '/plugin/user/app/common/validate/UserMenuValidate.php',
 
         '/public/admin_react/src/api/userMenu.js'               => '/public/admin_react/src/api/userMenu.js',
