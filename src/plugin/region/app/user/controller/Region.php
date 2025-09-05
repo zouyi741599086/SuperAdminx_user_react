@@ -1,9 +1,9 @@
 <?php
-namespace app\user\controller;
+namespace plugin\region\app\user\controller;
 
 use support\Request;
 use support\Response;
-use app\common\logic\RegionLogic;
+use plugin\region\app\common\logic\RegionLogic;
 
 /**
  * 省市区

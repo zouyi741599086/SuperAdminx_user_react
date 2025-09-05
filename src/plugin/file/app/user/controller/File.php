@@ -1,10 +1,11 @@
 <?php
-namespace app\user\controller;
+namespace plugin\file\app\user\controller;
 
 use support\Request;
 use support\Response;
-use app\utils\AliyunOss;
-use app\utils\File as FileUtils;
+use plugin\file\app\utils\AliyunOssUtils;
+use plugin\file\app\utils\QcloudCosUtils;
+use plugin\file\app\utils\FileUtils;
 
 /**
  * 文件
@@ -28,7 +29,12 @@ class File
     public function upload(Request $request) : Response
     {
         $result = FileUtils::upload($request->post('disk') ?: '');
-        return is_array($result) ? result($result, 1, '上传成功', false) : result([], -1, '没有文件被上传', false);
+
+        if (is_array($result) && $result) {
+            return result($result, 1, '上传成功', false);
+        } else {
+            return result([], -1, '没有文件被上传', false);
+        }
     }
 
     /**
@@ -58,7 +64,20 @@ class File
      */
     public function getSignature(Request $request) : Response
     {
-        $data = AliyunOss::getSignature();
+        $data = AliyunOssUtils::getSignature();
+        return result($data);
+    }
+
+    /**
+     * 前端直传腾讯云cos 获取上传的链接
+     * @method post
+     * @param Request $request 
+     * @param string $dir 上传的文件路劲
+     * @return Response
+     */
+    public function getQcloudSignature(Request $request, string $dir) : Response
+    {
+        $data = QcloudCosUtils::getSignature($dir);
         return result($data);
     }
 
@@ -70,7 +89,7 @@ class File
      */
     public function uploadAliyunOssCallback(Request $request) : void
     {
-        AliyunOss::uploadAliyunOssCallback();
+        AliyunOssUtils::uploadAliyunOssCallback();
     }
 
 }

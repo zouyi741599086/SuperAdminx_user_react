@@ -15,13 +15,13 @@ export const config = {
         // 开关
         enable: import.meta.env.VITE_APP_DEBUG === 'true' ? false : true,
         rsa_public: `-----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvk5vRf/L7THoMQ9woCWh
-    dy21h61/kUZi9kfOvbw3KNV58I0061Z/8i4KmteNHs8H4nS6zc9AmrkNtfvAQ+dw
-    CZ7MPM+NI4TsrrfFizvtoAbOxk/EcicIKwuP5ROeao3WeWrBPXibuvJkrs8YOOPX
-    RQge2lbLPbvRaUXQNVgsrrRtPLlbEfMFgWl0ltbLOa69PiNKXdebjWOEZ6Wf+rR2
-    rt9/gJucdeUln5wAxJvlFhWjt/LbQ1pg20B25JIaV/Bi7GCDztFIa13NFbBqOvgk
-    eo0P8VOaDPy0LYs81QvofzmxcuiQnUsSNbrI6KH9QhZjTqlsT8mFLPQCeHP9S/S3
-    LQIDAQAB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqNoRA7DlwWAp5N3Ax5eb
+    vt2ixWPaYOZXU+cprnubb75zoCbyks9zajuYPeSLUHF/jeg11aMcm/VC2URT/lpN
+    0PbdhvjASPhVw5Sr//TSfZpXWzAcVvbT/6i+vaQ3tUdXtstL9kG59bUUgAP2geYz
+    FVNSHHLwxDiuX+Cve6nXPY2hD01KQ5VqSmD5k8Lm3OrxU7FzCCipGT8DfPJrRMU+
+    T+UrESQOKK1Y96Q274z0XI6tM29f76lBX/uUooodMn8OufBaah/+yb3FCq3bydIn
+    vUgn2HeTk8+vv9uVLZKXcyIHQNTGOk/fUZFLxx88k1Pnkh37EKA6cb4hzB6FGBMa
+    PwIDAQAB
     -----END PUBLIC KEY-----`,
     },
     // 腾讯地图apiKey，form里面的的腾讯经纬度字段组件需要使用

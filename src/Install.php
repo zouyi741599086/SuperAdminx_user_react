@@ -12,15 +12,21 @@ class Install
      * @var array
      */
     protected static $pathRelation = [
-        '/app/admin/controller/UserMenu.php'        => '/app/admin/controller/UserMenu.php',
-        '/app/common/logic/UserMenuLogic.php'       => '/app/common/logic/UserMenuLogic.php',
-        '/app/common/model/UserMenuModel.php'       => '/app/common/model/UserMenuModel.php',
-        '/app/common/validate/UserMenuValidate.php' => '/app/common/validate/UserMenuValidate.php',
-        '/app/middleware/JwtUser.php'               => '/app/middleware/JwtUser.php',
-        '/app/user'                                 => '/app/user',
-        '/public/admin_react/src/api/userMenu.js'   => '/public/admin_react/src/api/userMenu.js',
-        '/public/admin_react/src/pages/userMenu'    => '/public/admin_react/src/pages/userMenu',
-        '/public/user_react'                        => '/public/user_react',
+        '/app/middleware/JwtUser.php'                   => '/app/middleware/JwtUser.php',
+        '/plugin/file/app/user/controller/File.php'     => '/plugin/file/app/user/controller/File.php',
+        '/plugin/region/app/user/controller/Region.php' => '/plugin/region/app/user/controller/Region.php',
+        '/plugin/user/app/user'                         => '/plugin/user/app/user',
+
+        '/public/admin_react/src/api/userMenu.js'       => '/public/admin_react/src/api/userMenu.js',
+        '/public/admin_react/src/pages/userMenu'        => '/public/admin_react/src/pages/userMenu',
+
+        '/public/user_react'                            => '/public/user_react',
+    ];
+
+    // 要执行的sql文件
+    protected static $sqlFile = [
+        'createTable.sql', // 创建的表
+        'adminMenu.sql', // 添加的权限节点
     ];
 
     // db的配置，用来标识是否已配置
@@ -40,20 +46,17 @@ class Install
             // 开始检测安装条件
             if (self::installDetection()) {
 
+                // 拷贝文件
                 foreach (self::$pathRelation as $source => $dest) {
                     self::copy_dir(__DIR__ . $source, base_path() . $dest);
                 }
 
-                // 是否存在adminMenu.sql
-                $sqlPath = __DIR__ . '/adminMenu.sql';
-                if (file_exists($sqlPath) && is_file($sqlPath)) {
-                    self::installSql($sqlPath);
-                }
-
-                // 是否存在createTable.sql
-                $sqlPath = __DIR__ . '/createTable.sql';
-                if (file_exists($sqlPath) && is_file($sqlPath)) {
-                    self::installSql($sqlPath);
+                // 执行sql
+                foreach (self::$sqlFile as $item) {
+                    $sqlPath = __DIR__ . '/' . $item;
+                    if (file_exists($sqlPath) && is_file($sqlPath)) {
+                        self::installSql($sqlPath);
+                    }
                 }
 
                 echo "安装成功\n";

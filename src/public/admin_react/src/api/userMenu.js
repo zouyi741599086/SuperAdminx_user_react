@@ -9,22 +9,22 @@ import { http } from '@/common/axios.js'
 export const userMenuApi = {
     // 获取列表
     getList: (params = {}) => {
-        return http.get('/admin/UserMenu/getList', params);
+        return http.get('/app/user/admin/UserMenu/getList', params);
     },
     // 添加
     create: (params = {}) => {
-        return http.post('/admin/UserMenu/create', params);
+        return http.post('/app/user/admin/UserMenu/create', params);
     },
     // 获取某条数据
     findData: (params = {}) => {
-        return http.get('/admin/UserMenu/findData', params);
+        return http.get('/app/user/admin/UserMenu/findData', params);
     },
     // 修改
     update: (params = {}) => {
-        return http.post('/admin/UserMenu/update', params);
+        return http.post('/app/user/admin/UserMenu/update', params);
     },
     // 删除
     delete: (params = {}) => {
-        return http.post('/admin/UserMenu/delete', params);
+        return http.post('/app/user/admin/UserMenu/delete', params);
     },
 }

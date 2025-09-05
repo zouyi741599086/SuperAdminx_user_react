@@ -5,8 +5,8 @@ use ReflectionClass;
 use Webman\MiddlewareInterface;
 use Webman\Http\Response;
 use Webman\Http\Request;
-use app\utils\Jwt;
-use app\common\model\UserModel;
+use app\utils\JwtUtils;
+use plugin\user\app\common\model\UserModel;
 
 /**
  * user模块权限验证
@@ -23,11 +23,11 @@ class JwtUser implements MiddlewareInterface
         // 登录的角色
         $request->loginRole = 'user';
         if ($this->actionIsLogin()) {
-            $request->user = Jwt::getUser('user_pc');
+            $request->user = JwtUtils::getUser('user');
 
             // 高并发需要关掉此处控制一下验证时机
             $request->user = UserModel::find($request->user->id);
-            if (! $request->user || $request->user['status'] == 2) {
+            if (! $request->user || $request->user->status == 2) {
                 abort('非法请求', -2);
             }
         }

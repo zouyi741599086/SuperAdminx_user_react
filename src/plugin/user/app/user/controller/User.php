@@ -1,11 +1,11 @@
 <?php
-namespace app\user\controller;
+namespace plugin\user\app\user\controller;
 
 use support\Request;
 use support\Response;
-use app\common\logic\UserLogic;
-use app\common\logic\UserMenuLogic;
-use app\common\model\UserModel;
+use plugin\user\app\common\logic\UserLogic;
+use plugin\userPc\app\common\logic\UserMenuLogic;
+use plugin\user\app\common\model\UserModel;
 
 /**
  * 用户
@@ -29,7 +29,7 @@ class User
     public function getUser(Request $request) : Response
     {
         $data             = UserLogic::findData($request->user->id);
-        $user['UserMenu'] = UserMenuLogic::getList();
+        $data['UserMenu'] = UserMenuLogic::getList();
         return success($data);
     }
 

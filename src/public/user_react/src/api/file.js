@@ -10,19 +10,19 @@ import { config } from '@/common/config';
 export const fileApi = {
     // 上传图片等
     upload: (params = {}) => {
-        return http.upload('/user/File/upload', params);
+        return http.upload('/app/file/user/File/upload', params);
     },
     // 返回上传文件的url
-    uploadUrl: `${config.url}/user/File/upload`,
+    uploadUrl: `${config.url}/app/file/user/File/upload`,
     // 返回下载文件的url
-    download: `${config.url}/user/File/download`,
+    download: `${config.url}/app/file/user/File/download`,
 
     // 获取阿里云oss 前端直传的签名
     getSignature: (params = {}) => {
-        return http.get('/user/File/getSignature', params);
+        return http.get('/app/file/user/File/getSignature', params);
     },
     // 获取腾讯云cos 前端直传的签名
     getQcloudSignature: (params = {}) => {
-        return http.get('/user/File/getQcloudSignature', params);
+        return http.get('/app/file/user/File/getQcloudSignature', params);
     },
 }

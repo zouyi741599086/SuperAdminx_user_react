@@ -1,15 +1,15 @@
 <?php
-namespace app\user\controller;
+namespace plugin\user\app\user\controller;
 
 use support\Request;
 use support\Response;
 use think\facade\Db;
-use app\common\logic\UserLogic;
-use app\common\logic\UserMenuLogic;
-use app\common\model\UserModel;
-use app\common\model\SmsCodeModel;
-use app\utils\Sms;
-use app\utils\Jwt;
+use plugin\user\app\common\logic\UserLogic;
+use plugin\user\app\common\logic\UserMenuLogic;
+use plugin\user\app\common\model\UserModel;
+use plugin\sms\app\common\model\SmsCodeModel;
+use plugin\sms\app\utils\SmsUtils;
+use app\utils\JwtUtils;
 
 /**
  * 后台登录
@@ -51,7 +51,7 @@ class Login
         }
 
         $user             = UserLogic::findData($user['id'])->toArray();
-        $user['token']    = Jwt::generateToken('user_pc', $user);
+        $user['token']    = JwtUtils::generateToken('user', $user);
         $user['UserMenu'] = UserMenuLogic::getList();
         return success($user, '登录成功');
     }
@@ -71,7 +71,7 @@ class Login
             }
 
             //验证手机号格式
-            Sms::checkTel($params['tel']);
+            SmsUtils::checkTel($params['tel']);
 
             //判断此用户是否存在 是否正常
             $user = UserModel::where('tel', $params['tel'])->find();
@@ -80,9 +80,9 @@ class Login
 
             }
 
-            $params['code'] = Sms::getCode(4);
+            $params['code'] = SmsUtils::getCode(4);
             //开始发送短信
-            //Sms::send($params['tel'], "您的验证码是：{$params['code']}，有效期5分钟。");
+            //SmsUtils::send($params['tel'], "您的验证码是：{$params['code']}，有效期5分钟。");
 
             //添加发送记录
             $params['type'] = 1;
@@ -111,7 +111,7 @@ class Login
             ])->check($params);
 
             //核销验证码
-            Sms::checkCode($params['tel'], 1, $params['code']);
+            SmsUtils::checkCode($params['tel'], 1, $params['code']);
 
             //判断此用户是否存在 是否正常
             $user = UserModel::where('tel', $params['tel'])->find();
