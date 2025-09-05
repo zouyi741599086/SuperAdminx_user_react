@@ -23,6 +23,8 @@ class Login
     protected $onLogin = false;
     // 不需要登录的方法
     protected $noNeedLogin = [];
+    // 不需要加密的方法
+    protected $noNeedEncrypt = [];
 
     /**
      * 登录
