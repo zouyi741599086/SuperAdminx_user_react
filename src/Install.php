@@ -12,15 +12,15 @@ class Install
      * @var array
      */
     protected static $pathRelation = [
-        '/app/middleware/JwtUser.php'                   => '/app/middleware/JwtUser.php',
-        '/plugin/file/app/user/controller/File.php'     => '/plugin/file/app/user/controller/File.php',
-        '/plugin/region/app/user/controller/Region.php' => '/plugin/region/app/user/controller/Region.php',
-        '/plugin/user/app/user'                         => '/plugin/user/app/user',
+        '/app/middleware/JwtUser.php'             => '/app/middleware/JwtUser.php',
+        '/plugin/file/app/user'                   => '/plugin/file/app/user',
+        '/plugin/region/app/user'                 => '/plugin/region/app/user',
+        '/plugin/user/app/user'                   => '/plugin/user/app/user',
 
-        '/public/admin_react/src/api/userMenu.js'       => '/public/admin_react/src/api/userMenu.js',
-        '/public/admin_react/src/pages/userMenu'        => '/public/admin_react/src/pages/userMenu',
+        '/public/admin_react/src/api/userMenu.js' => '/public/admin_react/src/api/userMenu.js',
+        '/public/admin_react/src/pages/userMenu'  => '/public/admin_react/src/pages/userMenu',
 
-        '/public/user_react'                            => '/public/user_react',
+        '/public/user_react'                      => '/public/user_react',
     ];
 
     // 要执行的sql文件
