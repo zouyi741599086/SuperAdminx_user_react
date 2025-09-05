@@ -4,7 +4,7 @@ namespace plugin\user\app\user\controller;
 use support\Request;
 use support\Response;
 use plugin\user\app\common\logic\UserLogic;
-use plugin\userPc\app\common\logic\UserMenuLogic;
+use plugin\user\app\common\logic\UserMenuLogic;
 use plugin\user\app\common\model\UserModel;
 
 /**
