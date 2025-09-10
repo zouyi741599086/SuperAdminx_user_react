@@ -12,7 +12,7 @@
     "minimum-stability": "stable",
 	"autoload": {
         "psr-4": {
-            "SuperAdminx\\user_react\\": "src/"
+            "suepradminx\\user_react\\": "src/"
         }
     },
     "require": {}
