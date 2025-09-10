@@ -30,7 +30,7 @@ class UserMenuLogic
     {
         Db::startTrans();
         try {
-            validate(UserMenuValidate::class)->check($params);
+            think_validate(UserMenuValidate::class)->check($params);
 
             $result = UserMenuModel::create($params);
             // 找出我的路劲
@@ -188,7 +188,7 @@ class UserMenuLogic
             $params['pid_name'] = null;
         }
         try {
-            validate(UserMenuValidate::class)->check($params);
+            think_validate(UserMenuValidate::class)->check($params);
 
             // 原来旧的name
             $oldName = UserMenuModel::where('id', $params['id'])->value('name');

@@ -45,7 +45,7 @@ class User
     {
         $params = $request->post();
         try {
-            validate([
+            think_validate([
                 'name|姓名' => 'require',
                 'tel|手机号' => 'require|mobile',
             ])->check($params);
@@ -73,7 +73,7 @@ class User
         $params = $request->post();
         $userId = $request->user->id;
         try {
-            validate([
+            think_validate([
                 'password|原密码'            => 'require',
                 'new_password|新密码'        => 'require|min:6',
                 'confirm_password|再次输入密码' => 'require|min:6|confirm:new_password',

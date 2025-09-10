@@ -106,7 +106,7 @@ class Login
         $params = $request->post();
         Db::startTrans();
         try {
-            validate([
+            think_validate([
                 'tel|手机号'          => 'require|mobile',
                 'code|验证码'         => 'require',
                 'new_password|新密码' => 'require',
