@@ -6,13 +6,13 @@ import { App, Form, Input, Modal } from 'antd';
 import { useBoolean } from 'ahooks'
 import { userApi } from '@/api/user';
 import { storage } from '@/common/function'
-import { useRecoilState } from 'recoil';
-import { userStore } from '@/store/user';
+import { useSnapshot } from 'valtio';
+import { userStore, setUserStore } from '@/store/user';
 import { useNavigate } from 'react-router-dom';
 
 export default () => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);
-    const [user, setUser] = useRecoilState(userStore);
+    const user = useSnapshot(userStore);
     const [submitLoading, setSubmitLoading] = useState(false);
     const [form] = Form.useForm();
     const { message } = App.useApp();
@@ -27,7 +27,7 @@ export default () => {
                     message.success(res.message)
                     storage.remove('userToken');
                     sessionStorage.removeItem(`userToken`);
-                    setUser({})
+                    setUserStore({})
                     setTimeout(() => {
                         navigate('/login');
                     }, 1000)

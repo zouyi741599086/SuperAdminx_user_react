@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { PageContainer } from '@ant-design/pro-components';
 import { ProCard } from '@ant-design/pro-components';
 import { Col, Row, Space, Avatar, Typography, Tag } from 'antd';
-import { useRecoilState } from 'recoil';
-import { userStore } from '@/store/user';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { userStore, setUserStore } from '@/store/user';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 
 /**
  * 后台首页
@@ -13,8 +13,8 @@ import { layoutSettingStore } from '@/store/layoutSetting';
  * @link https://www.superadminx.com/
  */
 export default () => {
-    const [user] = useRecoilState(userStore);
-    const [layoutSetting] = useRecoilState(layoutSettingStore);
+    const user = useSnapshot(userStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
 
     return (
         <>

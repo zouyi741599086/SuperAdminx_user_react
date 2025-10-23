@@ -11,13 +11,13 @@ import { userApi } from '@/api/user';
 import { fileApi } from '@/api/file';
 import { config } from '@/common/config'
 import { getToken } from '@/common/function'
-import { useRecoilState } from 'recoil';
-import { userStore } from '@/store/user';
+import { useSnapshot } from 'valtio';
+import { userStore, setUserStore } from '@/store/user';
 import ImgCrop from 'antd-img-crop';
 
 export default () => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);
-    const [user, setUser] = useRecoilState(userStore);
+    const user = useSnapshot(userStore);
     const [submitLoading, setSubmitLoading] = useState(false);
     const [uploadLoading, setUploadLoading] = useState(false);
     const [form] = Form.useForm();
@@ -40,7 +40,7 @@ export default () => {
             userApi.updateInfo(params).then(res => {
                 if (res.code === 1) {
                     message.success(res.message)
-                    setUser((_val) => {
+                    setUserStore((_val) => {
                         return {
                             ..._val,
                             ...params

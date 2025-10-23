@@ -1,10 +1,10 @@
 import { lazy } from 'react';
 import { CaretDownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { App, Avatar, Space, Dropdown, Typography } from 'antd';
-import { useRecoilState } from 'recoil';
-import { userStore } from '@/store/user';
-import { menuAuthStore } from '@/store/menuAuth';
-import { contentTabsStore } from '@/store/contentTabs';
+import { useSnapshot } from 'valtio';
+import { userStore, setUserStore } from '@/store/user';
+import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
+import { contentTabsStore, setContentTabsStore } from '@/store/contentTabs';
 import { useNavigate } from 'react-router-dom';
 import { storage } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
@@ -20,9 +20,9 @@ const { Text } = Typography;
  * @link https://www.superadminx.com/
  */
 export default ({ showIcon = true, showName = true, placement = 'bottomLeft' }) => {
-    const [user, setUser] = useRecoilState(userStore);
-    const [menuAuth, setMenuAuth] = useRecoilState(menuAuthStore);
-    const [contentTabs, setContentTabs] = useRecoilState(contentTabsStore);
+    const user = useSnapshot(userStore);
+    const menuAuth = useSnapshot(menuAuthStore);
+    const contentTabs = useSnapshot(contentTabsStore);
     const { modal } = App.useApp();
     const navigate = useNavigate();
 
@@ -34,8 +34,8 @@ export default ({ showIcon = true, showName = true, placement = 'bottomLeft' }) 
             onOk() {
                 storage.remove('userToken');
                 sessionStorage.removeItem(`userToken`);
-                setUser({});
-                setMenuAuth({
+                setUserStore({});
+                setMenuAuthStore({
                     menu: [],
                     menuArrAll: [],
                     menuArr: [],
@@ -44,7 +44,7 @@ export default ({ showIcon = true, showName = true, placement = 'bottomLeft' }) 
                     openKeys: [],
                     activeData: {},
                 })
-                setContentTabs({
+                setContentTabsStore({
                     activeName: '',
                     keepAlive: [],
                     list: [],

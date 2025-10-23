@@ -6,9 +6,9 @@ import { LockOutlined, MobileOutlined } from '@ant-design/icons';
 import { storage } from '@/common/function'
 import { loginApi } from '@/api/login'
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from 'recoil';
-import { userStore } from '@/store/user';
-import { menuAuthStore } from '@/store/menuAuth';
+import { useSnapshot } from 'valtio';
+import { userStore, setUserStore } from '@/store/user';
+import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 import { loginAction } from '@/common/loginAction';
 import { config } from '@/common/config'
 import ResetPassword from './resetPassword';
@@ -23,8 +23,8 @@ const { Title } = Typography;
  * @link https://www.superadminx.com/
  */
 export default () => {
-    const [user, setUser] = useRecoilState(userStore);
-    const [menuAuth, setMenuAuth] = useRecoilState(menuAuthStore);
+    const user = useSnapshot(userStore);
+    const menuAuth = useSnapshot(menuAuthStore);
     const [loading, setLoading] = useState(false);
     const { message } = App.useApp();
     const navigate = useNavigate();
@@ -42,7 +42,7 @@ export default () => {
             }
             if (res.code === 1) {
                 message.success(res.message);
-                loginAction(res.data, setUser, setMenuAuth);
+                loginAction(res.data, setUserStore, setMenuAuthStore);
                 // 设置登录标识
                 if (stay_login === true) {
                     // 保存登录状态
