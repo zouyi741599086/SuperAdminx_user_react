@@ -11,6 +11,18 @@ use app\common\model\BaseModel;
  * */
 class UserMenuModel extends BaseModel
 {
-    // 表名
-    protected $name = 'user_menu';
+    /**
+     * 模型参数
+     * @return array
+     */
+    protected function getOptions() : array
+    {
+        return [
+            'name'               => 'user_menu',
+            'autoWriteTimestamp' => true,
+            'type'               => [],
+            'file'               => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
+            ],
+        ];
+    }
 }
